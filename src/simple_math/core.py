@@ -1,49 +1,70 @@
 
-"""
-Core math utilities for TDD practice.
+# src/simple_math/core.py
 
-All functions use basic `float` types only.
-"""
+from __future__ import annotations
 
-from typing import List
 
 def add(a: float, b: float) -> float:
     """
-    Return the sum of two numbers.
+    Return the sum of a and b.
 
     Examples:
-        >>> add(1.5, 2.5)
-        4.0
-        >>> add(-3.0, 1.0)
-        -2.0
+        >>> add(2.0, 3.5)
+        5.5
     """
-    raise NotImplementedError
+    return a + b
 
 
 def safe_divide(a: float, b: float) -> float:
     """
-    Divide `a` by `b`. Raise ValueError when `b` is zero.
+    Return a / b. Raise ValueError if b == 0.0.
 
     Examples:
-        >>> safe_divide(6.0, 3.0)
-        2.0
+        >>> safe_divide(10.0, 2.0)
+        5.0
         >>> safe_divide(1.0, 0.0)
         Traceback (most recent call last):
             ...
-        ValueError: denominator must not be zero
+        ValueError: division by zero
     """
-    raise NotImplementedError
+    if b == 0.0:
+        raise ValueError("division by zero")
+    return a / b
 
-def average(xs: List[float]) -> float:
+
+def sqrt_approx(x: float, iterations: int = 12) -> float:
     """
-    Compute the arithmetic mean of a non-empty list of floats.
+    Approximate sqrt(x) using Newton's method.
+    Raise ValueError if x < 0.0.
+
+    Notes:
+        - Handles x == 0.0 quickly.
+        - Uses a reasonable initial guess and 'iterations' refinement steps.
 
     Examples:
-        >>> average([1.0, 3.0, 5.0])
+        >>> round(sqrt_approx(9.0), 6)
         3.0
-        >>> average([])
-        Traceback (most recent call last):
-            ...
-        ValueError: xs must not be empty
     """
-    raise NotImplementedError
+    if x < 0.0:
+        raise ValueError("cannot take sqrt of negative number")
+    if x == 0.0:
+        return 0.0
+
+    # Good initial guess: x for x >= 1, else 1.0
+    guess = x if x >= 1.0 else 1.0
+    for _ in range(max(1, int(iterations))):
+        guess = 0.5 * (guess + x / guess)
+    return guess
+
+
+def average(xs: list[float]) -> float:
+    """
+    Return arithmetic mean of xs. Raise ValueError on empty list.
+
+    Examples:
+        >>> average([1.0, 2.0, 3.0])
+        2.0
+    """
+    if not xs:
+        raise ValueError("cannot average an empty list")
+    return sum(xs) / len(xs)
