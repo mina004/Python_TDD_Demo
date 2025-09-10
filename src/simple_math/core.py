@@ -28,7 +28,7 @@ def safe_divide(a: float, b: float) -> float:
         ValueError: division by zero
     """
     if b == 0.0:
-        raise ValueError("division by zero")
+        raise ValueError("denominator must not be zero")
     return a / b
 
 
@@ -66,5 +66,5 @@ def average(xs: list[float]) -> float:
         2.0
     """
     if not xs:
-        raise ValueError("cannot average an empty list")
+        raise ValueError("xs must not be empty")
     return sum(xs) / len(xs)
